@@ -135,5 +135,7 @@ extension Array where Element:Equatable {
 
 
 
-
+var this : Int?
+this = 2
+print(this)
 

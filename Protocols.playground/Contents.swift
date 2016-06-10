@@ -1,48 +1,8 @@
-//: Playground - noun: a place where people can 
-
-protocol FullyNameable
-{
-    var fullName:String {get}
-}
-
-struct User : FullyNameable
-{
-    var fullName: String
-}
-
-let user = User(fullName: "sdf")
-
-struct Friend
-{
-    let firstName: String
-    let middleName: String
-    let lastName: String
-    
-    var fullName:String
-    {
-        return "\(firstName) \(middleName) \(lastName)"
-    }
-}
-
-let friend = Friend(firstName: "Taylor", middleName: "Alison", lastName: "Swift")
-
-print(friend.fullName)
-
-protocol UserType {
-    var name: String { get }
-    var age: Int { get set }
-}
-
-struct Person : UserType
-{
-    var name: String
-    var age: Int
-}
-
-
-let somePerson = Person(name: "Robin", age: 21)
-
 import Foundation
+
+protocol payable {
+    func pay() -> (basePay: Double, benefits: Double, deductions: Double, vacationTime: Int)
+}
 
 enum EmployeeType {
     case Manager
@@ -51,7 +11,6 @@ enum EmployeeType {
 
 class Employee
 {
-    
     let name: String
     let address: String
     let startDate: NSDate
@@ -67,10 +26,61 @@ class Employee
         self.type = employeeType
         
     }
+}
+
+class HourlyEmployee: Employee, payable
+{
+    var hourlyWage: Double = 15.00
+    var hoursWorked: Double = 0
+    let availableVacation = 0
     
     func pay() -> (basePay: Double, benefits: Double, deductions: Double, vacationTime: Int) {
-        return (0, 0, 0, 0)
+        return (hourlyWage*hoursWorked, 0, 0, availableVacation)
     }
-    
 }
+
+func  payEmployee(employee:payable) -> Void
+{
+    employee.pay()
+}
+let emp = Employee(fullName: "Robin", employeeAddress: "none", employeeStartDate: NSDate(), employeeType: .NotManager)
+
+
+protocol Blendable {
+    func blend()
+}
+class Fruit : Blendable {
+    var name: String
+    
+    init(name: String) {
+        self.name = name
+    }
+    func blend() {
+        print("I'm mush")
+    }
+}
+
+class Dairy : Blendable{
+    var name: String
+    func blend() {
+        print("Still milk")
+    }
+    init(name: String) {
+        self.name = name
+    }
+}
+
+class Cheese: Dairy {}
+
+class Milk: Dairy {}
+
+func makeSmoothie(ingredients : [Blendable])
+{
+    ingredients.forEach { (ingredient) in
+        ingredient.blend()
+    }
+}
+let apple = Fruit(name: "Apple")
+let milk = Milk(name: "Milk")
+makeSmoothie([milk, apple])
 
